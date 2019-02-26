@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.views.generic import TemplateView
 from users.views import *
 
@@ -28,4 +28,16 @@ urlpatterns = [
 
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
+    # 忘记密码的路由视图对应关系
+    url(r'forget/$', ForgetView.as_view(), name='forget_pwd'),
+    url(r'^courses/', include('courses.urls', namespace='courses')),
+    url(r'^org/', include('organization.urls', namespace='org')),
+    # 激活用户url
+    url(r'^active/(?P<token>.*)/$', UserActiveView.as_view(), name='user_active'),
+    # 重置密码的路由视图对象关系
+    url(r'^reset/(?P<token>.*)/$',ResetView.as_view(),name='reset_pwd'),
+    # 修改密码提交的路由视图对象关系
+    url(r'modify_pwd/$',ModifyPwdView.as_view(),name='modify_pwd'),
+
+    url(r'^captcha/', include('captcha.urls')),  # 验证码的路由入口
 ]

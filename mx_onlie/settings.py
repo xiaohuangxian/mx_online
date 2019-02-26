@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'operation.apps.OperationConfig',
     'xadmin',
     'extra_apps.DjangoUeditor',
-    'crispy_forms', # 这里一定不要忘记注册
+    'crispy_forms',  # 这里一定不要忘记注册
+    'captcha',  # 验证码
 ]
 
 MIDDLEWARE = [
@@ -139,3 +140,16 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+# 发送邮件的配置
+# 发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# smpt服务地址
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+# 发送邮件的邮箱
+EMAIL_HOST_USER = 'fiomanbegin@163.com'
+# 在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = '112233cq'
+# 收件人看到的发件人
+EMAIL_FROM = '慕学网<fiomanbegin@163.com>'

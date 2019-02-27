@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.db import models
+from organization.models import CourseOrg, Teacher
 
 
 # 课程信息表
@@ -14,12 +15,18 @@ class Course(models.Model):
     desc = models.CharField(max_length=300, verbose_name='课程描述')
     # 后期会替换为富文本的模式
     detail = models.TextField(verbose_name='课程详情')
-    degree = models.CharField(choices=DegreeChoices, max_length=2)
+    degree = models.CharField(choices=DegreeChoices, max_length=2, verbose_name='课程难度')
+    teacher = models.ForeignKey(Teacher, verbose_name='讲师', null=True, blank=True)
+    course_org = models.ForeignKey(CourseOrg, verbose_name='所属机构', null=True, blank=True)
     learn_time = models.IntegerField(default=0, verbose_name='学习时长(分钟数)')
     students = models.IntegerField(default=0, verbose_name='学习人数')
     fav_nums = models.IntegerField(default=0, verbose_name='收藏人数')
+    category = models.CharField(max_length=20, default='', verbose_name='课程类别')
     image = models.ImageField(upload_to='courses/%Y/%m', max_length=100, verbose_name='封面图')
     click_nums = models.IntegerField(default=0, verbose_name='点击数')
+    tag = models.CharField(max_length=15, verbose_name='课程标签', default='')
+    you_need_know = models.CharField(max_length=300, default='一颗勤学的心是本课程必要前提', verbose_name='课程须知')
+    teacher_tell = models.CharField(max_length=300, default='按时交作业,不然叫家长', verbose_name='老师告诉你')
     add_time = models.DateTimeField(default=datetime.now, verbose_name='添加事件')
 
     class Meta:

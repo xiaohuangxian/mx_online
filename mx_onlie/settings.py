@@ -79,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                #  添加图片处理器：为了在课程机构列表中前面加上MEDIA_URL
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -153,3 +155,7 @@ EMAIL_HOST_USER = 'fiomanbegin@163.com'
 EMAIL_HOST_PASSWORD = '112233cq'
 # 收件人看到的发件人
 EMAIL_FROM = '慕学网<fiomanbegin@163.com>'
+
+# 配置存放上传文件的路径的别名
+MEDIA_URL = '/media/' # 这里相当于是别名
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') # 这里是实际上传的根目录

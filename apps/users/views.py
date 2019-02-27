@@ -141,3 +141,15 @@ class ModifyPwdView(View):
         else:
             email = request.POST.get('email', '')
             return render(request, 'password_reset.html', {'email': email, 'modifypwd_form': modifypwd_form})
+
+
+class UserInfoView(View):
+    pass
+
+
+class LogoutView(View):
+    pass
+
+
+class MyMessageView(View):
+    pass

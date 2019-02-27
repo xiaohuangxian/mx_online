@@ -19,10 +19,16 @@ class CityDict(models.Model):
 class CourseOrg(models.Model):
     name = models.CharField(max_length=50, verbose_name='机构名称')
     desc = models.TextField(verbose_name='机构描述')
+    category = models.SmallIntegerField(choices=((1, '培训机构'), (2, '高校'), (3, '个人')),
+                                        default=1, verbose_name=u'机构类别')
     click_nums = models.IntegerField(default=0, verbose_name='点击数')
     fav_nums = models.IntegerField(default=0, verbose_name='收藏')
     image = models.ImageField(upload_to='org/%Y/%m', verbose_name='封面图')
     address = models.CharField(max_length=150, verbose_name='机构地址')
+
+    # 学习人数
+    students = models.IntegerField(default=0, verbose_name='学习人数')
+    course_nums = models.IntegerField(default=0, verbose_name='课程数')
 
     # 城市外键
     city = models.ForeignKey(CityDict, verbose_name='所在城市')
@@ -40,6 +46,8 @@ class CourseOrg(models.Model):
 class Teacher(models.Model):
     # 外键,一个机构可以对应多个老师
     org = models.ForeignKey(CourseOrg, verbose_name='所属机构')
+    image = models.ImageField(default='', upload_to="teacher/%Y/%m",
+                              verbose_name=u"头像", max_length=100)
     name = models.CharField(max_length=50, verbose_name='教师名')
     work_years = models.IntegerField(default=0, verbose_name='工作年限')
     work_company = models.CharField(max_length=50, verbose_name='就职公司')

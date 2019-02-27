@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import PageNotAnInteger
 from django.db.models import Q
 from django.shortcuts import render
@@ -7,6 +8,7 @@ from django.views.generic.base import View
 from pure_pagination import Paginator
 
 from courses.models import Course
+from operation.models import UserFavorite
 
 
 class CourseListView(View):
@@ -46,11 +48,45 @@ class CourseListView(View):
             'all_courses': courses,
             'hot_courses': hot_courses,
             'sort': sort,
+            'search_keywords': search_keywords,
         }
         return render(request, 'course-list.html', context)
 
 
+# 课程详情页
 class CourseDetailView(View):
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+        # 是否有收藏
+        has_fav_course = False
+        has_fav_org = False
+
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=course.id, fav_type=1):
+                has_fav_course = True
+            if UserFavorite.objects.filter(user=request.user, fav_type=2, fav_id=course.course_org.id):
+                has_fav_org = True
+
+        # 当点击课程详情页的时候,点击数需要加1
+        course.click_nums += 1
+        course.save()
+
+        # 通过tag进行相关课程推荐
+        tag = course.tag
+        if tag:
+            relate_courses = Course.objects.filter(tag=tag)[:2]
+        else:
+            # 因为前端是一个for循环,所以这里必须传个列表
+            relate_courses = []
+
+        context = {
+            'course': course,
+            'relate_courses': relate_courses,
+        }
+        return render(request, 'course-detail.html', context)
+
+
+# 课程信息页面
+class CourseInfoView(LoginRequiredMixin, View):
+    def get(self, request):
         return render(request, )
